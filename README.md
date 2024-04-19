@@ -1,66 +1,40 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Giới thiệu về dự án
+    -Tên dự án: Phần mềm đặt thức ăn nhanh 
+    -Quản lý dự án: Huỳnh Anh Khoa
+    -Hoàng Hải Đăng, Vũ Quốc Tùng, Phan Thị Hồng Hiên
+    -Chịu trách nhiệm phát triển phần mềm: 	Ngô Bá Tấn Tài, Huỳnh Anh Khoa
+## Cài đặt
+    -Laravel v10.48.8 (PHP v8.1.10)
+    -Chi tiết tại trang chủ laravel
+## Công cụ
+    -Máy ảo laragon
+    -MySQL (myphpadmin )
+    -VS Code
+## Cơ sở dữ liệu
+![image](https://github.com/AnhKhoa24/Datdoannhanh/assets/114119176/969a1aee-1bda-4452-be49-188b2c9c77ba)
 
-## About Laravel
+## Phạm vi dự án
+ Do việc thiếu hụt về kiến thức cũng như nguồn lực nên phạm vi của dự án được giới hạn lại chỉ dùng cho mục đích học tập, nghiên cứu  nâng cao trình độ của sinh viên. Do đó, các chức năng chỉ giới hạn ở mức phù hợp và được nêu cụ thể ở phần 2 của tài liệu.
+Nội dung nghiên cứu của dự án gồm:
++ Nghiên cứu về nhu cầu sử dụng website đặt thức ăn của người dùng hiện nay.
++ Phân tích và thiết kế hệ thống sao cho mang lại nhiều lợi ích cho người dùng.
++ Xây dựng được hệ thống dựa trên các bảng thiết kế đã đề ra.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Bối cảnh
+Hiện nay, người tiêu dùng đã dần chuyển sang mua sắm trực tuyến thông qua các nền tảng nhiều hơn bởi vì sự tiện lợi mà nó mang lại là rất lớn. Không chỉ riêng các sản phẩm may mặc hay điện tử mà bây giờ nhu cầu ăn uống cũng có thể đặt thông qua các website hay ứng dụng điện thoại. Ngày trước, việc đặt đồ ăn về tận nơi mà không cần đến cửa hàng cũng đã được thực hiện khá phổ biến, khách hàng sẽ gọi đến cửa hàng để đặt sản phẩm mình mong muốn và cửa hàng sẽ tiếp nhận và thực hiện yêu cầu của khách hàng. Cách thức này có vẻ hiệu quả so với trước đây bởi chưa có sự cạnh tranh lớn như hiện nay. Đối với một lượng lớn nhu cầu ăn uống tại nhà như hiện nay thì việc ghi nhận món ăn thông qua cuộc gọi sẽ tốn rất nhiều nhân lực, bên cạnh đó còn có thể sai sót trong quá trình ghi nhận. Vì thế cần phải áp dụng các giải pháp phần mềm để giúp cho việc vận hành trở nên tốt hơn.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Mục đích hệ thống
+Hệ thống này sẽ áp dụng cho các cơ sở kinh doanh ăn uống vừa và nhỏ nhằm cải thiện được quy trình quản lý, tối ưu hóa chi phí và thời gian. Tăng cường, mở rộng quy mô kinh doanh.
+## Chức năng
+1. Đăng ký tài khoản
+2. Đăng nhập
+3. Lấy lại mật khẩu
+4. Hủy tài khoản
+5. Tìm kiếm sản phẩm
+6. Thêm vào giỏ hàng
+7. Đặt hàng
+8. Theo dõi trạng thái đơn hàng (Real-time )
+9. Hủy đơn hàng
+10. Quản lý sản phẩm
+11. 

@@ -10,10 +10,26 @@ class ProductController extends Controller
 {  
     public function index()
     {
-        $products = DB::table('products')->get();
-        return view('sanpham.index',[
-            'products'=>$products
-        ]);
+    }
+    public function create()
+    {
+
+    }
+    public function store(Request $request)
+    {
+
+    }
+    public function viewmore($id)
+    {
+
+    }
+    public function savechanges(Request $request)
+    {
+
+    }
+    public function delete(Request $request)
+    {
+        
     }
 
 }

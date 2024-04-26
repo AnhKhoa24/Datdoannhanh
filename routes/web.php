@@ -33,6 +33,8 @@ Route::controller(AdminDanhmucController::class)->group(function()
 {
     Route::get('admin/danhmuc','index')->middleware('auth','admin');
     Route::post('admin/danhmuc','store')->middleware('auth','admin');
+    Route::post('/admin/editdanhmuc','savechange')->middleware('auth','admin');
+    Route::post('/admin/xoadanhmuc','xoadanhmuc')->middleware('auth','admin');
 });
 
 require __DIR__.'/auth.php';

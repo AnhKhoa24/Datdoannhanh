@@ -23,12 +23,24 @@
                     </thead>
                     <tbody class="table-border-bottom-0" id="listdanhmuc">
                         @foreach ($danhmucs as $danhmuc)
-                            <tr>
+                            <tr id="{{ $danhmuc->ma_danhmuc }}">
                                 <td>{{ $danhmuc->ma_danhmuc }}</td>
                                 <td>{{ $danhmuc->tendanhmuc }}</td>
 
                                 <td>
-                                    Sửa
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                          <a class="dropdown-item" href="#" onclick="suaDanhMuc({{ $danhmuc->ma_danhmuc }},'{{ $danhmuc->tendanhmuc }}')"
+                                            ><i class="bx bx-edit-alt me-1"></i> Sửa</a
+                                          >
+                                          <a class="dropdown-item" href="#" onclick="xoaDanhMuc({{ $danhmuc->ma_danhmuc }})"
+                                            ><i class="bx bx-trash me-1"></i> Xóa</a
+                                          >
+                                        </div>
+                                      </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -50,58 +62,5 @@
 
     </div>
 
-    <script>
-        function themdanhmuc() {
-            swal({
-                    text: "Nhập tên danh mục vào đây:",
-                    content: "input",
-                    buttons: {
-                        cancel: "Thoát",
-                        confirm: {
-                            text: "Thêm",
-                            value: true,
-                        },
-                    },
-                })
-                .then((value) => {
-                    if (value === "") {
-                        swal("Bạn không nhập gì cả!");
-                    } else if (value === null) {
-                        swal("Bạn đã thoát ra!");
-                    } else {
-
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                        $.ajax({
-                            url: "/admin/danhmuc",
-                            type: 'POST',
-                            dataType: "json",
-                            data: {
-                                tendanhmuc: value
-                            },
-                            success: function(response) {
-
-
-                                var newhtml = `
-                                   <tr>
-                                <td>${response.ma_danhmuc}</td>
-                                <td>${response.tendanhmuc}</td>
-                                <td>
-                                    Sửa
-                                </td>
-                                     </tr>
-                                   `;
-                                document.getElementById('listdanhmuc').insertAdjacentHTML('beforeend',
-                                    newhtml);
-                                swal("Thành công!", "Bạn đã thêm mới một danh mục!", "success");
-                            }
-                        })
-
-                    }
-                });
-        }
-    </script>
+    <script src="{{ asset('assets/danhmuc.js') }}"></script>
 @endsection

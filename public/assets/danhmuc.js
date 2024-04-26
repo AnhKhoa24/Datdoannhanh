@@ -139,7 +139,7 @@ function thoatDanhmuc(ma_danhmuc, tendanhmuc) {
               <a class="dropdown-item" href="#" onclick="suaDanhMuc(${ma_danhmuc},'${tendanhmuc}')"
                 ><i class="bx bx-edit-alt me-1"></i> Sửa</a
               >
-              <a class="dropdown-item" href="#"
+              <a class="dropdown-item" href="#" onclick="xoaDanhMuc(${ma_danhmuc})"
                 ><i class="bx bx-trash me-1"></i> Delete</a
               >
             </div>

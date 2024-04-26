@@ -29,27 +29,6 @@
 
 </head>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var header = document.querySelector("#h-header");
-        var navigation = document.querySelector("#navigation");
-        window.addEventListener("scroll", myfunction);
-
-        var temp;
-
-        function myfunction() {
-            temp = header.getBoundingClientRect().top + header.getBoundingClientRect().height;
-            if (temp < 0) {
-                navigation.style.setProperty("position", "fixed");
-                navigation.style.setProperty("top", "0px");
-            } else {
-                navigation.style.removeProperty("position", "fixed");
-                navigation.style.removeProperty("top", "0px");
-            }
-        }
-    });
-</script>
-
 <body>
 
     <!-- HEADER -->
@@ -287,6 +266,28 @@
         <!-- /bottom footer -->
     </footer>
     <!-- /FOOTER -->
+
+    
+    @if (Auth::user())
+        <form id="myForm" method="POST" action="{{ route('logout') }}">
+            @csrf
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+        </form>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                var myForm = document.getElementById('myForm');
+                var submitLink = document.getElementById('submitLink');
+
+                submitLink.addEventListener('click', function(event) {
+
+                    event.preventDefault();
+                    myForm.submit();
+                });
+            });
+        </script>
+    @endif
+
     <!-- jQuery Plugins -->
     <script src="/assets2/js/jquery.min.js"></script>
     <script src="/assets2/js/bootstrap.min.js"></script>
@@ -294,7 +295,7 @@
     <script src="/assets2/js/nouislider.min.js"></script>
     <script src="/assets2/js/jquery.zoom.min.js"></script>
     <script src="/assets2/js/main.js"></script>
-
+    <script src="/assets2/custom.js"></script>
 </body>
 
 </html>

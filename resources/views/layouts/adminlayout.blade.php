@@ -15,8 +15,7 @@
     </title>
 
     <meta name="description" content="" />
-    <link rel="icon" type="image/x-icon"
-        href="https://scontent.fsgn17-1.fna.fbcdn.net/v/t39.30808-1/312455376_1252545965319890_9105224374554298734_n.jpg?stp=dst-jpg_s320x320&_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_ohc=7Glgta8hd1cAb6ITUbh&_nc_ht=scontent.fsgn17-1.fna&oh=00_AfCSB9zrZro21bvuSsCBOpoIZk3mMMKjRVfDdd0MxSlsGQ&oe=662141CB" />
+   
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -36,6 +35,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 </head>
 
 <body>
@@ -49,11 +50,12 @@
                     <a href="index.html" class="app-brand-link">
                         <span class="app-brand-logo demo">
                             <svg width="100" height="100" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path fill="#FFD700" d="M12 2.63l2.37 7.29h7.62l-6.18 4.5 2.37 7.29-6.21-4.53-6.21 4.53 2.37-7.29-6.18-4.5h7.62z"/>
-                              </svg>
-                              
+                                <path fill="#FFD700"
+                                    d="M12 2.63l2.37 7.29h7.62l-6.18 4.5 2.37 7.29-6.21-4.53-6.21 4.53 2.37-7.29-6.18-4.5h7.62z" />
+                            </svg>
+
                         </span>
-                                            
+
                         <span class="app-brand-text demo menu-text fw-bolder ms-2">fb88</span>
                     </a>
 
@@ -83,7 +85,7 @@
                         </a>
                         <ul class="menu-sub">
                             <li class="menu-item">
-                                <a href="" class="menu-link">
+                                <a href="/admin/danhmuc" class="menu-link">
                                     <div>Danh mục</div>
                                 </a>
                             </li>
@@ -122,7 +124,7 @@
                             </li>
                         </ul>
                     </li>
-                    
+
                 </ul>
             </aside>
             <!-- / Menu -->
@@ -209,7 +211,7 @@
                                                 <i class="bx bx-user me-2"></i>
                                                 <span class="align-middle">Trang cá nhân</span>
                                             </a>
-                                        </li>                                    
+                                        </li>
                                         <li>
                                             <a class="dropdown-item" href="#">
                                                 <span class="d-flex align-items-center align-middle">
@@ -267,7 +269,7 @@
     </script>
 
     {{-- <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script> --}}
-    <script src="{{ asset('assets/js/sweetalert.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/sweetalert.min.js') }}"></script> --}}
     <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
     <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
@@ -277,7 +279,7 @@
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
     {{-- <script async defer src="https://buttons.github.io/buttons.js"></script> --}}
     {{-- <script src="{{ asset('assets/js/buttons.js') }}"></script> --}}
-   
+
 </body>
 
 </html>

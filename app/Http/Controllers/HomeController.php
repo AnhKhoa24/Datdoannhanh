@@ -11,7 +11,7 @@ class HomeController extends Controller
     {
         if(Auth::user()->role == 1)
         {
-            return redirect('/admin/sanpham');
+            return redirect('admin');
         }
         else
         {

@@ -1,3 +1,4 @@
+
 function themdanhmuc() {
     swal({
         text: "Nhập tên danh mục vào đây:",
@@ -30,8 +31,9 @@ function themdanhmuc() {
                         tendanhmuc: value
                     },
                     success: function (response) {
-
-
+                        const trCount = document.getElementById('listdanhmuc').getElementsByTagName('tr').length;
+                        if(trCount < 8)
+                        {
                         var newhtml = `<tr id="${response.ma_danhmuc}">
                         <td>${response.ma_danhmuc}</td>
                         <td>${response.tendanhmuc}</td>
@@ -54,6 +56,7 @@ function themdanhmuc() {
                            `;
                         document.getElementById('listdanhmuc').insertAdjacentHTML('beforeend',
                             newhtml);
+                        }
                         swal("Thành công!", "Bạn đã thêm mới một danh mục!", "success");
                     }
                 })
@@ -65,7 +68,7 @@ function themdanhmuc() {
 
 function suaDanhMuc(ma_danhmuc, tendanhmuc) {
 
-    document.getElementById(ma_danhmuc).innerHTML =`<td>${ma_danhmuc}</td>
+    document.getElementById(ma_danhmuc).innerHTML = `<td>${ma_danhmuc}</td>
     <td><input id="tendanhmuc_${ma_danhmuc}" type="text" name="tendanhmuc" value="${tendanhmuc}" size="40" /></td>
     <td>
     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
@@ -109,7 +112,7 @@ function luuDanhMuc(ma_danhmuc) {
                         ><i class="bx bx-edit-alt me-1"></i> Sửa</a
                       >
                       <a class="dropdown-item" href="#" onclick="xoaDanhMuc(${ma_danhmuc})"
-                        ><i class="bx bx-trash me-1"></i> Delete</a
+                        ><i class="bx bx-trash me-1"></i>Xóa</a
                       >
                     </div>
                   </div>
@@ -123,7 +126,6 @@ function luuDanhMuc(ma_danhmuc) {
     else {
         swal("Tên danh mục trống!", "...bạn không được bỏ trống!");
     }
-
 
 }
 function thoatDanhmuc(ma_danhmuc, tendanhmuc) {
@@ -140,7 +142,7 @@ function thoatDanhmuc(ma_danhmuc, tendanhmuc) {
                 ><i class="bx bx-edit-alt me-1"></i> Sửa</a
               >
               <a class="dropdown-item" href="#" onclick="xoaDanhMuc(${ma_danhmuc})"
-                ><i class="bx bx-trash me-1"></i> Delete</a
+                ><i class="bx bx-trash me-1"></i>Xóa</a
               >
             </div>
           </div>
@@ -173,25 +175,68 @@ function xoaDanhMuc(ma_danhmuc) {
                     },
                     success: function (response) {
 
-                        if(response == 1)
-                        {
+                        if (response == 1) {
                             document.getElementById(ma_danhmuc).remove();
                             swal("Keeee! Bạn đã xóa thành công!", {
                                 icon: "success",
                             });
                         }
-                        else
-                        {
+                        else {
                             swal("Oops! Xóa thất bại, do sản phẩm còn tồn tại trong danh mục", {
                                 icon: "warning",
                             });
                         }
-                       
+
                     }
                 })
 
-
-
             }
         });
+}
+
+$(window).on('hashchange', function() {
+    if (window.location.hash) {
+        var page = window.location.hash.replace('#', '');
+        if (page == Number.NaN || page <= 0) {
+            return false;
+        } else {
+            getData(page);
+        }
+    }
+});
+$(document).ready(function() {
+    $(document).on('click', '.pagination a', function(event) {
+        $('li').removeClass('active');
+        $(this).parent('li').addClass('active');
+        event.preventDefault();
+
+        var myurl = $(this).attr('href');
+        var page = $(this).attr('href').split('page=')[1];
+
+        getData(page);
+    });
+});
+
+function getData(page) {
+    $.ajax({
+            url: '/admin/danhmuc?page=' + page,
+            type: "get",
+            datatype: "html",
+        })
+        .done(function(data) {
+            $("#danhmuc-list").empty().html(data);
+            location.hash = page;
+        })
+        .fail(function(jqXHR, ajaxOptions, thrownError) {
+            alert('No response from server');
+        });
+}
+
+function checkSearch() {
+    var searchInput = document.querySelector('input[name="search"]');
+    if (searchInput.value.trim() === '') {
+        window.location.href = '/admin/danhmuc';
+        return false; 
+    }
+    return true; 
 }

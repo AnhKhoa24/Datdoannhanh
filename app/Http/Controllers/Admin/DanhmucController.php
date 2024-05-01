@@ -13,14 +13,26 @@ class DanhmucController extends Controller
     public function index(Request $request)
     {
         $search = "";
+        $count = Danhmuc::count();
+        $sotrang = ceil($count / 8);
+
         if ($request->search) {
             $search = $request->search;
         }
         $danhmucs = DB::table('danhmucs')->where('tendanhmuc', 'LIKE', "%$search%")->paginate(8);
+        if ($request->search) {
+            $da = DB::table('danhmucs')->where('tendanhmuc', 'LIKE', "%$search%")->get();
+            $tes1 = sizeof($da);
+            $sotrang = ceil($tes1 / 8);
+        }
+        if ($request->ajax()) {
+            return view('admin.danhmuc_data', compact('danhmucs'));
+        }
         return view('admin.danhmuc', [
             'danhmucs' => $danhmucs,
             'title' => 'Danh mục',
             'search' => $search,
+            'sotrang' => $sotrang,
         ]);
     }
     public function store(Request $request)
@@ -41,23 +53,19 @@ class DanhmucController extends Controller
     {
         //Try catch sẽ update sau
         $danhmuc = Danhmuc::where('ma_danhmuc', $request->ma_danhmuc)->update([
-            'tendanhmuc'=>$request->tendanhmuc,
+            'tendanhmuc' => $request->tendanhmuc,
         ]);
         return 1;
     }
 
     public function xoadanhmuc(Request $request)
     {
-        $check = DB::table('products')->where('ma_danhmuc',$request->ma_danhmuc)->get();
-        if(sizeof($check) < 1)
-        {
-            DB::table('danhmucs')->where('ma_danhmuc',$request->ma_danhmuc)->delete();
+        $check = DB::table('products')->where('ma_danhmuc', $request->ma_danhmuc)->get();
+        if (sizeof($check) < 1) {
+            DB::table('danhmucs')->where('ma_danhmuc', $request->ma_danhmuc)->delete();
             return 1;
-        }
-        else
-        {
+        } else {
             return 0;
         }
-    
     }
 }

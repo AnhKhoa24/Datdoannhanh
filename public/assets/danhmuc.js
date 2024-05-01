@@ -32,9 +32,8 @@ function themdanhmuc() {
                     },
                     success: function (response) {
                         const trCount = document.getElementById('listdanhmuc').getElementsByTagName('tr').length;
-                        if(trCount < 8)
-                        {
-                        var newhtml = `<tr id="${response.ma_danhmuc}">
+                        if (trCount < 8) {
+                            var newhtml = `<tr id="${response.ma_danhmuc}">
                         <td>${response.ma_danhmuc}</td>
                         <td>${response.tendanhmuc}</td>
                         <td>
@@ -54,8 +53,8 @@ function themdanhmuc() {
                         </td>
                              </tr>
                            `;
-                        document.getElementById('listdanhmuc').insertAdjacentHTML('beforeend',
-                            newhtml);
+                            document.getElementById('listdanhmuc').insertAdjacentHTML('beforeend',
+                                newhtml);
                         }
                         swal("Thành công!", "Bạn đã thêm mới một danh mục!", "success");
                     }
@@ -177,6 +176,9 @@ function xoaDanhMuc(ma_danhmuc) {
 
                         if (response == 1) {
                             document.getElementById(ma_danhmuc).remove();
+
+
+
                             swal("Keeee! Bạn đã xóa thành công!", {
                                 icon: "success",
                             });
@@ -194,7 +196,7 @@ function xoaDanhMuc(ma_danhmuc) {
         });
 }
 
-$(window).on('hashchange', function() {
+$(window).on('hashchange', function () {
     if (window.location.hash) {
         var page = window.location.hash.replace('#', '');
         if (page == Number.NaN || page <= 0) {
@@ -204,8 +206,8 @@ $(window).on('hashchange', function() {
         }
     }
 });
-$(document).ready(function() {
-    $(document).on('click', '.pagination a', function(event) {
+$(document).ready(function () {
+    $(document).on('click', '.pagination a', function (event) {
         $('li').removeClass('active');
         $(this).parent('li').addClass('active');
         event.preventDefault();
@@ -217,26 +219,52 @@ $(document).ready(function() {
     });
 });
 
+
+function movePrevious() {
+
+    var currentPage = document.querySelector('.pagination .page-item.active');
+    if (!currentPage || currentPage.previousElementSibling == null) {
+        return;
+    }
+    currentPage.classList.remove('active');
+    currentPage.previousElementSibling.classList.add('active');
+    var page = currentPage.previousElementSibling.querySelector('.page-link').innerText;
+    getData(page);
+};
+
+function moveNext() {
+    var currentPage = document.querySelector('.pagination .page-item.active');
+    var nextPage = currentPage.nextElementSibling;
+    if (!nextPage || nextPage.classList.contains('next')) {
+        return;
+    }
+    currentPage.classList.remove('active');
+    nextPage.classList.add('active');
+    var page = nextPage.querySelector('.page-link').innerText;
+    getData(page);
+}
+
 function getData(page) {
     $.ajax({
-            url: '/admin/danhmuc?page=' + page,
-            type: "get",
-            datatype: "html",
-        })
-        .done(function(data) {
+        url: '/admin/danhmuc?page=' + page,
+        type: "get",
+        datatype: "html",
+    })
+        .done(function (data) {
             $("#danhmuc-list").empty().html(data);
             location.hash = page;
         })
-        .fail(function(jqXHR, ajaxOptions, thrownError) {
+        .fail(function (jqXHR, ajaxOptions, thrownError) {
             alert('No response from server');
         });
 }
+
 
 function checkSearch() {
     var searchInput = document.querySelector('input[name="search"]');
     if (searchInput.value.trim() === '') {
         window.location.href = '/admin/danhmuc';
-        return false; 
+        return false;
     }
-    return true; 
+    return true;
 }

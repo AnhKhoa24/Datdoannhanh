@@ -22,25 +22,25 @@
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item prev">
-                                    <a class="page-link" href="javascript:void(0);"><i
-                                            class="tf-icon bx bx-chevrons-left"></i></a>
+                                    <button onclick="movePrevious()" class="page-link"><i
+                                            class="tf-icon bx bx-chevrons-left"></i></button>
                                 </li>
                                 @for ($i = 1; $i <= $sotrang; $i++)
                                     @if ($i == 1)
                                         <li class="page-item active">
-                                            <a class="page-link" href="/admin/danhmuc?page=1" onclick="page(1)">1</a>
+                                            <a class="page-link" href="/admin/danhmuc?page=1">1</a>
                                         </li>
                                     @else
                                         <li class="page-item">
-                                            <a class="page-link" href="/admin/danhmuc?page={{ $i }}"
-                                                onclick="page({{ $i }})">{{ $i }}</a>
+                                            <a class="page-link"
+                                                href="/admin/danhmuc?page={{ $i }}">{{ $i }}</a>
                                         </li>
                                     @endif
                                 @endfor
 
                                 <li class="page-item next">
-                                    <a class="page-link" href="javascript:void(0);"><i
-                                            class="tf-icon bx bx-chevrons-right"></i></a>
+                                    <button class="page-link" onclick="moveNext()"><i
+                                            class="tf-icon bx bx-chevrons-right"></i></button>
                                 </li>
                             </ul>
                         </nav>
@@ -53,6 +53,6 @@
 
     </div>
 
-    <script src="{{ asset('assets/danhmuc.js') }}"></script>
 
+    <script src="{{ asset('assets/danhmuc.js') }}"></script>
 @endsection

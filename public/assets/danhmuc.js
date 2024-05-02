@@ -31,31 +31,8 @@ function themdanhmuc() {
                         tendanhmuc: value
                     },
                     success: function (response) {
-                        const trCount = document.getElementById('listdanhmuc').getElementsByTagName('tr').length;
-                        if (trCount < 8) {
-                            var newhtml = `<tr id="${response.ma_danhmuc}">
-                        <td>${response.ma_danhmuc}</td>
-                        <td>${response.tendanhmuc}</td>
-                        <td>
-                        <div class="dropdown">
-                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                          <i class="bx bx-dots-vertical-rounded"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                          <a class="dropdown-item" href="#" onclick="suaDanhMuc(${response.ma_danhmuc},'${response.tendanhmuc}')"
-                            ><i class="bx bx-edit-alt me-1"></i> Sửa</a
-                          >
-                          <a class="dropdown-item" href="#" onclick="xoaDanhMuc(${response.ma_danhmuc})"
-                            ><i class="bx bx-trash me-1"></i> Xóa</a
-                          >
-                        </div>
-                      </div>
-                        </td>
-                             </tr>
-                           `;
-                            document.getElementById('listdanhmuc').insertAdjacentHTML('beforeend',
-                                newhtml);
-                        }
+                        var trang = laysotrang();
+                        getData(trang);
                         swal("Thành công!", "Bạn đã thêm mới một danh mục!", "success");
                     }
                 })
@@ -176,9 +153,12 @@ function xoaDanhMuc(ma_danhmuc) {
 
                         if (response == 1) {
                             document.getElementById(ma_danhmuc).remove();
-
-
-
+                            const trCount = document.getElementById('listdanhmuc').getElementsByTagName('tr').length;
+                            var sotrang = laysotrang();
+                            trCount < 1 ? sotrang = sotrang - 1 : sotrang;
+                            if (trCount < 8) {
+                                getData(sotrang);
+                            }
                             swal("Keeee! Bạn đã xóa thành công!", {
                                 icon: "success",
                             });
@@ -211,10 +191,7 @@ $(document).ready(function () {
         $('li').removeClass('active');
         $(this).parent('li').addClass('active');
         event.preventDefault();
-
-        var myurl = $(this).attr('href');
         var page = $(this).attr('href').split('page=')[1];
-
         getData(page);
     });
 });
@@ -223,12 +200,13 @@ $(document).ready(function () {
 function movePrevious() {
 
     var currentPage = document.querySelector('.pagination .page-item.active');
-    if (!currentPage || currentPage.previousElementSibling == null) {
+    var prevpage = currentPage.previousElementSibling;
+    if (!prevpage || prevpage.classList.contains('prev')) {
         return;
     }
     currentPage.classList.remove('active');
-    currentPage.previousElementSibling.classList.add('active');
-    var page = currentPage.previousElementSibling.querySelector('.page-link').innerText;
+    prevpage.classList.add('active');
+    var page = prevpage.querySelector('.page-link').innerText;
     getData(page);
 };
 
@@ -248,10 +226,13 @@ function getData(page) {
     $.ajax({
         url: '/admin/danhmuc?page=' + page,
         type: "get",
-        datatype: "html",
+        datatype: "json",
     })
         .done(function (data) {
-            $("#danhmuc-list").empty().html(data);
+
+            $("#danhmuc-list").empty().html(data.data);
+            $("#danhsachtrang").empty().html(data.paginate);
+
             location.hash = page;
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
@@ -260,11 +241,57 @@ function getData(page) {
 }
 
 
-function checkSearch() {
-    var searchInput = document.querySelector('input[name="search"]');
-    if (searchInput.value.trim() === '') {
-        window.location.href = '/admin/danhmuc';
-        return false;
+
+
+//Hàm lấy số trang hiện tại
+function laysotrang() {
+    var currentPage = document.querySelector('.pagination .page-item.active');
+    if (!currentPage) {
+        return null;
     }
-    return true;
+    var link = currentPage.querySelector('.page-link');
+    if (!link) {
+        return null;
+    }
+    var pageNumber = link.innerText;
+    return parseInt(pageNumber);
+}
+
+$(function livesearch() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: "/admin/danhmuc/getname",
+        type: 'POST',
+        dataType: "json",
+        success: function (data) {
+            $("#tags-search").autocomplete({
+                source: data
+            });
+        }
+    });
+
+});
+
+function search()
+{
+    var search = document.querySelector('#tags-search').value;
+    $.ajax({
+        url: '/admin/danhmuc?search=' + search,
+        type: "get",
+        datatype: "json",
+    })
+        .done(function (data) {
+
+            $("#danhmuc-list").empty().html(data.data);
+            $("#danhsachtrang").empty().html(data.paginate);
+
+        })
+        .fail(function (jqXHR, ajaxOptions, thrownError) {
+            alert('No response from server');
+        });
+    
 }

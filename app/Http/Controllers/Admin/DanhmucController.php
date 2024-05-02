@@ -20,19 +20,23 @@ class DanhmucController extends Controller
             $search = $request->search;
         }
         $danhmucs = DB::table('danhmucs')->where('tendanhmuc', 'LIKE', "%$search%")->paginate(8);
+        $trang = $danhmucs->currentPage();
         if ($request->search) {
             $da = DB::table('danhmucs')->where('tendanhmuc', 'LIKE', "%$search%")->get();
             $tes1 = sizeof($da);
             $sotrang = ceil($tes1 / 8);
         }
         if ($request->ajax()) {
-            return view('admin.danhmuc_data', compact('danhmucs'));
+            return [
+                'data' => view('admin.danhmuc_data', ['danhmucs' => $danhmucs])->render(),
+                'paginate' => view('admin.danhmuc_trang', ['sotrang' => $sotrang, 'trang'=>$trang])->render(),
+            ];
         }
         return view('admin.danhmuc', [
             'danhmucs' => $danhmucs,
             'title' => 'Danh mục',
-            'search' => $search,
             'sotrang' => $sotrang,
+            'trang' => $trang,
         ]);
     }
     public function store(Request $request)
@@ -68,4 +72,16 @@ class DanhmucController extends Controller
             return 0;
         }
     }
+    public function getname()
+    {
+        $data = [];
+        $get = DB::table('danhmucs')->get();
+        foreach($get as $item)
+        {
+            $data[] = $item->tendanhmuc;
+        }
+        return $data;
+    }
 }
+
+

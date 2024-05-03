@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Danhmuc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class DanhmucController extends Controller
 {
@@ -29,7 +28,7 @@ class DanhmucController extends Controller
         if ($request->ajax()) {
             return [
                 'data' => view('admin.danhmuc_data', ['danhmucs' => $danhmucs])->render(),
-                'paginate' => view('admin.danhmuc_trang', ['sotrang' => $sotrang, 'trang'=>$trang])->render(),
+                'paginate' => view('admin.danhmuc_trang', ['sotrang' => $sotrang, 'trang' => $trang])->render(),
             ];
         }
         return view('admin.danhmuc', [
@@ -41,7 +40,6 @@ class DanhmucController extends Controller
     }
     public function store(Request $request)
     {
-
         $danhmuc = new Danhmuc();
         $danhmuc->tendanhmuc = $request->tendanhmuc;
         $danhmuc->save();
@@ -55,11 +53,14 @@ class DanhmucController extends Controller
     }
     public function savechange(Request $request)
     {
-        //Try catch sẽ update sau
-        $danhmuc = Danhmuc::where('ma_danhmuc', $request->ma_danhmuc)->update([
-            'tendanhmuc' => $request->tendanhmuc,
-        ]);
-        return 1;
+        try {
+            $danhmuc = Danhmuc::where('ma_danhmuc', $request->ma_danhmuc)->update([
+                'tendanhmuc' => $request->tendanhmuc,
+            ]);
+            return 1;
+        } catch (\Exception $e) {
+            return 0;
+        }
     }
 
     public function xoadanhmuc(Request $request)
@@ -76,12 +77,9 @@ class DanhmucController extends Controller
     {
         $data = [];
         $get = DB::table('danhmucs')->get();
-        foreach($get as $item)
-        {
+        foreach ($get as $item) {
             $data[] = $item->tendanhmuc;
         }
         return $data;
     }
 }
-
-

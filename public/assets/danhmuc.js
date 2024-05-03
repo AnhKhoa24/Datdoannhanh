@@ -1,4 +1,5 @@
 
+//Thêm danh mục
 function themdanhmuc() {
     swal({
         text: "Nhập tên danh mục vào đây:",
@@ -176,6 +177,7 @@ function xoaDanhMuc(ma_danhmuc) {
         });
 }
 
+//Lấy data khi thay đổi số trang trên thanh địa chỉ
 $(window).on('hashchange', function () {
     if (window.location.hash) {
         var page = window.location.hash.replace('#', '');
@@ -186,6 +188,7 @@ $(window).on('hashchange', function () {
         }
     }
 });
+//
 $(document).ready(function () {
     $(document).on('click', '.pagination a', function (event) {
         $('li').removeClass('active');
@@ -239,9 +242,6 @@ function getData(page) {
             alert('No response from server');
         });
 }
-
-
-
 
 //Hàm lấy số trang hiện tại
 function laysotrang() {

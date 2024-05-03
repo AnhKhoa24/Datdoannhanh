@@ -28,6 +28,9 @@ Route::controller(AdminHomeController::class)->group(function(){
 });
 Route::controller(AdminProductController::class)->group(function(){
     Route::get('admin/sanpham','index')->middleware('auth', 'admin');
+    Route::get('admin/sanpham-them','create')->middleware('auth','admin');
+    Route::post('admin/sanpham-them','store')->middleware('auth','admin');
+    Route::post('/admin/laydanhmuc','laydanhmuc')->middleware('auth','admin');
 });
 Route::controller(AdminDanhmucController::class)->group(function()
 {

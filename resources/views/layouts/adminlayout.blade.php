@@ -55,10 +55,11 @@
                                 <path fill="#FFD700"
                                     d="M12 2.63l2.37 7.29h7.62l-6.18 4.5 2.37 7.29-6.21-4.53-6.21 4.53 2.37-7.29-6.18-4.5h7.62z" />
                             </svg>
+                            
 
                         </span>
 
-                        <span class="app-brand-text demo menu-text fw-bolder ms-2">fb88</span>
+                        <span class="app-brand-text demo menu-text fw-bolder ms-2">VNFOOD</span>
                     </a>
 
                     <a href="#" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -97,7 +98,7 @@
                                 </a>
                             </li>
                             <li class="menu-item">
-                                <a href="" class="menu-link">
+                                <a href="/admin/donhang" class="menu-link">
                                     <div>Đơn hàng</div>
                                 </a>
                             </li>

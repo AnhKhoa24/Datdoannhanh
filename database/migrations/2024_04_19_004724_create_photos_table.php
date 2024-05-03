@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('photos', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
-            $table->integer('product_id');
+            $table->bigInteger('product_id')->unsigned();
             $table->string('photo_link');
             $table->timestamps();
 

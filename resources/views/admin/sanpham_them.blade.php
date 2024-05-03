@@ -73,6 +73,7 @@
     <!-- / Content -->
     <script>
         var csrfToken = "{{ csrf_token() }}";
+        var danhmuc = [];
     </script>
     <script src="{{ asset('assets/sanpham.js') }}"></script>
 @endsection

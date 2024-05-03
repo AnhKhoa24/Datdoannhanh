@@ -23,7 +23,14 @@ $(document).ready(function(){
                 };
 
             },
-        }
+        },
+        data: $.map(danhmuc, function(option) {
+            return {
+                id: option.ma_danhmuc,
+                text: option.tendanhmuc,
+                selected: true
+            };
+        })
     })
 });
 

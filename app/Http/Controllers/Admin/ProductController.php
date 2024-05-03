@@ -9,6 +9,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use PhpParser\Node\Stmt\TryCatch;
 
 class ProductController extends Controller
 {
@@ -66,24 +68,68 @@ class ProductController extends Controller
                 $imageNams[] = $imageName;
                 $photo = new Photo();
                 $photo->photo_link = $imageName;
-                $photo->product_id = $product->id;
+                $photo->product_id = $product->product_id;
                 $photo->save();
             }
         }
-        $nguoithem = Auth::user()->name;
-        $noidung = $nguoithem." đã thêm mới một sản phẩm";
-        event(new ThongBaoEvent($noidung));
-        return redirect('/admin/sanpham')->with('success','Thêm thành công!');
+        return redirect('/admin/sanpham')->with('success', 'Thêm thành công!');
     }
 
-    public function xemthem($id)
+    public function xemthem($product_id)
     {
-        $sanpham = DB::table('sanphams')->where('product_id',$id)->first();
-
-
-        return view('admin.sanpham_chitiet',[
-            'sanpham'=>$sanpham,
-            'title'=> $sanpham->product_name,
+        $sanpham = DB::table('products')->where('product_id', $product_id)->first();
+        $danhmuc = DB::table('danhmucs')->join('products', 'danhmucs.ma_danhmuc', 'products.ma_danhmuc')
+            ->where('product_id', $product_id)->get();
+        $photos = DB::table('photos')->join('products', 'photos.product_id', 'products.product_id')
+            ->where('photos.product_id', $product_id)->get();
+        return view('admin.sanpham_chitiet', [
+            'sanpham' => $sanpham,
+            'title' => $sanpham->product_name,
+            'danhmuc' => $danhmuc,
+            'photos' => $photos,
         ]);
+    }
+    public function savechanges(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required',
+            'product_name' => 'required',
+            'price' => 'required',
+            'ma_danhmuc' => 'required',
+        ]);
+        DB::table('products')->where('product_id', $request->product_id)->update([
+            'product_name' => $request->product_name,
+            'price' => $request->price,
+            'ma_danhmuc' => $request->ma_danhmuc,
+            'description' => $request->description,
+        ]);
+
+        //Xử lý ảnh, nếu người dùng tải ảnh mới
+        if ($request->images) {
+            $photos = DB::table('photos')->where('product_id', $request->product_id)->get();
+            //Xóa ảnh cũ
+            foreach ($photos as $photo) {
+                $fileanh = public_path('uploads') . '/' . $photo->photo_link;
+                if (File::exists($fileanh)) {
+                    File::delete($fileanh);
+                }
+            }
+            //Xóa trên db
+            DB::table('photos')->where('product_id', $request->product_id)->delete();
+
+            //Tải ảnh mới
+            foreach ($request->images as $value) {
+                $imageName = time() . '_' . $value->getClientOriginalName();
+                $value->move(public_path('uploads'), $imageName);
+                $imageNams[] = $imageName;
+                $photo = new Photo();
+                $photo->photo_link = $imageName;
+                $photo->product_id = $request->product_id;
+                $photo->save();
+            }
+        }
+
+
+        return redirect('/admin/sanpham-xemthem/' . $request->product_id);
     }
 }

@@ -2,7 +2,7 @@
 @section('content')
     @if (session('success'))
         <div class="bs-toast toast toast-placement-ex m-2 fade bg-primary bottom-0 end-0 show" role="alert"
-            aria-live="assertive" aria-atomic="true">
+            aria-live="assertive" aria-atomic="true" data-delay="2000">
             <div class="toast-header">
                 <i class="bx bx-bell me-2"></i>
                 <div class="me-auto fw-semibold">Thông báo</div>

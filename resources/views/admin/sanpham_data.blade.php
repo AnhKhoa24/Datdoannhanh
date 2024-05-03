@@ -16,7 +16,7 @@
         <td>{{ $sanpham->product_name }}</td>
         <td>{{ number_format($sanpham->price, 0) }} vnđ</td>
         <td>{{ $sanpham->tendanhmuc }}</td>
-        <td>Xem thêm</td>
+        <td><a href="/admin/sanpham-xemthem/{{ $sanpham->product_id }}">Xem thêm</a></td>
        </tr>
    @endforeach
 </tbody>

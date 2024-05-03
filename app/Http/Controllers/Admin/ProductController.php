@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\ThongBaoEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Photo;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -55,7 +57,7 @@ class ProductController extends Controller
         $product->ma_danhmuc = $request->ma_danhmuc;
         $product->save();
 
-       
+
         //Xử lý ảnh
         if ($request->images) {
             foreach ($request->images as $value) {
@@ -68,7 +70,20 @@ class ProductController extends Controller
                 $photo->save();
             }
         }
+        $nguoithem = Auth::user()->name;
+        $noidung = $nguoithem." đã thêm mới một sản phẩm";
+        event(new ThongBaoEvent($noidung));
+        return redirect('/admin/sanpham')->with('success','Thêm thành công!');
+    }
 
-        return redirect('/admin/sanpham')->with('success',"Thêm thành công sản phẩm");
+    public function xemthem($id)
+    {
+        $sanpham = DB::table('sanphams')->where('product_id',$id)->first();
+
+
+        return view('admin.sanpham_chitiet',[
+            'sanpham'=>$sanpham,
+            'title'=> $sanpham->product_name,
+        ]);
     }
 }

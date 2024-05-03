@@ -15,7 +15,7 @@
     </title>
 
     <meta name="description" content="" />
-   
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -39,6 +39,32 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 
+
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('ea6012be0da9b8704099', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('khoaday');
+        channel.bind('khoaday', function(data) {
+            // alert(JSON.stringify(data));
+
+            var toast = document.querySelector('.bs-toast');
+            if (toast) {
+                toast.classList.remove('hide');
+                toast.classList.add('show');
+                document.getElementById('thongbao-realtime').innerHTML =data.thongbao;
+            }
+
+
+        });
+    </script>
+
+
 </head>
 
 <body>
@@ -55,7 +81,7 @@
                                 <path fill="#FFD700"
                                     d="M12 2.63l2.37 7.29h7.62l-6.18 4.5 2.37 7.29-6.21-4.53-6.21 4.53 2.37-7.29-6.18-4.5h7.62z" />
                             </svg>
-                            
+
 
                         </span>
 
@@ -253,6 +279,19 @@
 
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
+                    <div class="bs-toast toast toast-placement-ex m-2 fade bg-primary bottom-0 end-0 hide"
+                        role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+                        <div class="toast-header">
+                            <i class="bx bx-bell me-2"></i>
+                            <div class="me-auto fw-semibold">Thông báo</div>
+                            <small>Vừa xong</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body" id="thongbao-realtime">
+                            
+                        </div>
+                    </div>
                     @yield('content')
                 </div>
                 <!-- Content wrapper -->

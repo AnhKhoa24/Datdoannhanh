@@ -1,0 +1,73 @@
+.message {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.content-m {
+    flex: 1;
+    margin-right: 10px;
+    /* Khoảng cách giữa nội dung và nút xóa */
+}
+
+.author {
+    font-weight: bold;
+}
+
+.time {
+    font-size: 0.8em;
+    color: #999;
+}
+
+.xoatn {
+    background-color: transparent;
+    color: #0d0d0d;
+    /* Màu chữ */
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.xoatn:hover {
+    color: #fff;
+    /* Khi hover vào nút, đổi màu chữ thành màu trắng */
+    background-color: #0d0d0d;
+    /* Khi hover vào nút, đổi màu nền */
+}
+
+.notification {
+    position: fixed;
+    width: 400px;
+    bottom: 20px;
+    right: 20px;
+    /* background-color: #0a29b4; */
+    background-color: rgba(31, 23, 251, 0.8);
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    display: none;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.notification-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    /* Khoảng cách giữa tiêu đề và nội dung */
+}
+
+.notification-content {
+    font-size: 14px;
+    margin-top: 5px;
+    /* Khoảng cách giữa tiêu đề và nội dung */
+    text-align: justify;
+    /* Canh lề cho nội dung */
+}
+
+.notification.show {
+    opacity: 1;
+}

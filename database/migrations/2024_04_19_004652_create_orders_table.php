@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('recipient_name',50);
             $table->string('recipient_phone',12);
             $table->string('recipient_address');
+            $table->string('note')->nullable();
+            $table->string('payment');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

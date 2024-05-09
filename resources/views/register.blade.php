@@ -64,28 +64,28 @@
                             <div class="mb-3">
                                 <label for="name" class="form-label">Tên</label>
                                 <input type="text" class="form-control" id="name" name="name"
-                                    placeholder="Enter your email or username" autofocus />
+                                    placeholder="Tên tài khoản của bạn" autofocus required/>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="text" class="form-control" id="email" name="email"
-                                    placeholder="Enter your email or username" autofocus />
+                                    placeholder="Email của bạn" autofocus required/>
                             </div>
                             <div class="mb-3 form-password-toggle">
                                 <label class="form-label" for="password">Password</label>
                                 <div class="input-group input-group-merge">
                                     <input type="password" id="password" class="form-control" name="password"
                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password" />
+                                        aria-describedby="password" required/>
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                 </div>
                             </div>
                             <div class="mb-3 form-password-toggle">
                                 <label class="form-label" for="password_confirmation">Xác nhận mật khẩu</label>
                                 <div class="input-group input-group-merge">
-                                    <input type="password_confirmation" id="password_confirmation" class="form-control" name="password_confirmation"
+                                    <input type="password" id="password_confirmation" class="form-control" name="password_confirmation"
                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password" />
+                                        aria-describedby="password" required/>
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                 </div>
                             </div>
@@ -101,18 +101,6 @@
     </div>
 
     <!-- / Content -->
-
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="../assets/vendor/libs/popper/popper.js"></script>
-    <script src="../assets/vendor/js/bootstrap.js"></script>
-    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
-    <script src="../assets/vendor/js/menu.js"></script>
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
 
     <!-- Main JS -->
     <script src="../assets/js/main.js"></script>

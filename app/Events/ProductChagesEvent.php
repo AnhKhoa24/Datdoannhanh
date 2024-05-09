@@ -19,13 +19,17 @@ class ProductChagesEvent implements ShouldBroadcast
 
     public $product;
     public $message;
+    public $user_id;
+
     /**
      * Create a new event instance.
      */
     public function __construct(Product $product)
     {
         $this->product = $product;
-        $this->message = Auth::user()->name." đã thêm sản phẩm mới là ".$this->product->product_name;
+        $this->message = Auth::user()->name . " đã thêm sản phẩm mới là " . $this->product->product_name;
+        $this->user_id = Auth::user()->id;
+
     }
 
     /**
@@ -35,10 +39,11 @@ class ProductChagesEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
+
         return ['khoalatui'];
     }
     public function broadcastAs()
-  {
-      return 'khoalatui';
-  }
+    {
+        return 'khoalatui';
+    }
 }

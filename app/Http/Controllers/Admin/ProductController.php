@@ -2,23 +2,34 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\ThongBaoEvent;
+use App\Events\ProductDeleteEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Photo;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use PhpParser\Node\Stmt\TryCatch;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $sanphams = DB::table('products')->join('danhmucs', 'products.ma_danhmuc', 'danhmucs.ma_danhmuc')->paginate(8);
+
+        $search = "";
+        if ($request->search) {
+            $search = $request->search;
+        }
+        $sanphams = DB::table('products')->join('danhmucs', 'products.ma_danhmuc', 'danhmucs.ma_danhmuc')
+            ->where('products.product_name', 'LIKE', "%$search%")
+            ->paginate(8);
         $sotrang = $sanphams->lastPage();
         $trang = $sanphams->currentPage();
+        if ($request->ajax()) {
+            return [
+                'data' => view('admin.sanpham_data', ['sanphams' => $sanphams])->render(),
+                'paginate' => view('admin.sanpham_trang', ['sotrang' => $sotrang, 'trang' => $trang])->render(),
+            ];
+        }
         return view('admin.sanpham', [
             'sanphams' => $sanphams,
             'sotrang' => $sotrang,
@@ -57,7 +68,11 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->description = $request->description;
         $product->ma_danhmuc = $request->ma_danhmuc;
-        $product->save();
+        try {
+            $product->save();
+        } catch (\Exception $e) {
+            return redirect('/admin/sanpham')->with("error", "Có lỗi xảy ra");
+        }
 
 
         //Xử lý ảnh
@@ -72,7 +87,8 @@ class ProductController extends Controller
                 $photo->save();
             }
         }
-        return redirect('/admin/sanpham')->with('success', 'Thêm thành công!');
+        // return redirect('/admin/sanpham')->with('success', 'Thêm thành công!');
+        return 1;
     }
 
     public function xemthem($product_id)
@@ -97,12 +113,13 @@ class ProductController extends Controller
             'price' => 'required',
             'ma_danhmuc' => 'required',
         ]);
-        DB::table('products')->where('product_id', $request->product_id)->update([
-            'product_name' => $request->product_name,
-            'price' => $request->price,
-            'ma_danhmuc' => $request->ma_danhmuc,
-            'description' => $request->description,
-        ]);
+
+        $product = Product::find($request->product_id);
+        $product->product_name = $request->product_name;
+        $product->price = $request->price;
+        $product->ma_danhmuc = $request->ma_danhmuc;
+        $product->description = $request->description;
+        $product->save();
 
         //Xử lý ảnh, nếu người dùng tải ảnh mới
         if ($request->images) {
@@ -129,7 +146,33 @@ class ProductController extends Controller
             }
         }
 
+        return redirect('/admin/sanpham-xemthem/' . $request->product_id)->with('success', "Bạn vừa cập nhật thành công!");
+    }
 
-        return redirect('/admin/sanpham-xemthem/' . $request->product_id);
+    public function xoa(Request $request)
+    {
+        //Xóa ảnh của sản phẩm
+        $photos = DB::table('photos')->where('product_id', $request->product_id)->get();
+        foreach ($photos as $photo) {
+            $fileanh = public_path('uploads') . '/' . $photo->photo_link;
+            if (File::exists($fileanh)) {
+                File::delete($fileanh);
+            }
+        }
+        //Xóa link ảnh trên DB
+        DB::table('photos')->where('product_id', $request->product_id)->delete();
+        //Xóa product
+        //Xóa link ảnh trên DB
+        DB::table('photos')->where('product_id', $request->product_id)->delete();
+        //Xóa product
+        $product = Product::find($request->product_id);
+        $product_bk = $product;
+        $product->delete();
+
+        try {
+            event(new ProductDeleteEvent($product_bk));
+        } catch (\Exception $e) {
+        }
+        return 1;
     }
 }

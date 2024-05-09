@@ -9,28 +9,30 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 
 class ThongBaoEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $thongbao;
-    
-    public function __construct($thongbao)
+    public $message;
+    public $user_id;
+    public function __construct()
     {
-        $this->thongbao = $thongbao;
+        $this->message = "Đã có một đơn hàng mới!";
+        $this->user_id = Auth::user()->id;
     }
     /**
      * Get the channels the event should broadcast on.
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
-        return ['khoaday'];
+        return ['khoalatui'];
     }
     public function broadcastAs()
     {
-        return 'khoaday';
+        return 'khoalatui';
     }
 }

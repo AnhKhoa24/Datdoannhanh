@@ -23,7 +23,7 @@
                 <div class="d-flex">
                     <input name="search" id="tags-search" class="form-control me-2" type="search"
                         placeholder="Tìm kiếm ..." aria-label="Search">
-                    <button class="btn btn-outline-success">Tìm</button>
+                    <button class="btn btn-outline-success" onclick="search()">Tìm</button>
                 </div>
             </div>
             <div class="table-responsive text-nowrap">
@@ -44,6 +44,7 @@
             </div>
         </div>
 
-
     </div>
+
+    <script src="{{ asset('assets/ptsanpham.js') }}"></script>
 @endsection

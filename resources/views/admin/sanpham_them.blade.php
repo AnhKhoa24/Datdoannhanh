@@ -12,65 +12,101 @@
                         {{-- <small class="text-muted float-end">Default label</small> --}}
                     </div>
                     <div class="card-body">
-                            <form method="POST" action="/admin/sanpham-them"
-                            onsubmit="return validateForm()"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-name">Tên sản phẩm</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="product_name" class="form-control" id="product_name"
-                                            placeholder="Tên sản phẩm"/>
-                                            <div class="form-text text-danger" id="check-product_name"></div>                                            
-                                    </div>
-                                    
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-name">Giá bán</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" name="price" class="form-control" id="price" placeholder="Giá sản phẩm" />
-                                        <div class="form-text text-danger" id="check-price"></div> 
-                                    </div>
+                        <form method="POST" action="/admin/sanpham-them" id="myForm" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Tên sản phẩm</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="product_name" class="form-control" id="product_name"
+                                        placeholder="Tên sản phẩm" />
+                                    <div class="form-text text-danger" id="check-product_name"></div>
                                 </div>
 
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-name">Danh mục</label>
-                                    <div class="col-sm-10">
-                                        <select name="ma_danhmuc" class="form-select" id='testti'>
-
-                                        </select>
-                                        <div class="form-text text-danger" id="check-danhmuc"></div> 
-                                    </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Giá bán</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="price" class="form-control" id="price"
+                                        placeholder="Giá sản phẩm" />
+                                    <div class="form-text text-danger" id="check-price"></div>
                                 </div>
+                            </div>
 
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Danh mục</label>
+                                <div class="col-sm-10">
+                                    <select name="ma_danhmuc" class="form-select" id='testti'>
 
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-name">Ảnh</label>
-                                    <div class="col-sm-10">
-                                        <input type="file" name="images[]" accept="image/*" class="form-control"
-                                            placeholder="Chọn nhiều ảnh" multiple />
-                                    </div>
+                                    </select>
+                                    <div class="form-text text-danger" id="check-danhmuc"></div>
                                 </div>
+                            </div>
 
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-name">Mô tả</label>
-                                    <div class="col-sm-10">
-                                        <textarea name="description" class="form-control" rows="3" placeholder="Mô tả sản phẩm"></textarea>
-                                    </div>
-                                </div>
 
-                                <div class="row justify-content-end">
-                                    <div class="col-sm-10">
-                                        <button type="submit" class="btn btn-primary">Thêm mới</button>
-                                    </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ảnh</label>
+                                <div class="col-sm-10">
+                                    <input type="file" name="images[]" accept="image/*" class="form-control"
+                                        placeholder="Chọn nhiều ảnh" multiple />
                                 </div>
-                            </form>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Mô tả</label>
+                                <div class="col-sm-10">
+                                    <textarea name="description" class="form-control" rows="3" placeholder="Mô tả sản phẩm"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-end">
+                                <div class="col-sm-10">
+                                    <button type="submit" id="submitBtn" class="btn btn-primary">Thêm mới</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- / Content -->
+    <script>
+        document.getElementById("submitBtn").addEventListener("click", function(e) {
+            e.preventDefault();
+            validateForm();
+            if (validateForm()) {
+                var loadingAlert = swal({
+                    title: "Loading...",
+                    text: "Please wait",
+                    icon: "info",
+                    buttons: false,
+                    closeOnClickOutside: false,
+                    closeOnEsc: false,
+                });
+                $('#myForm').append('<input type="hidden" name="_token" value="' + csrfToken + '">');
+                var formData = new FormData($('#myForm')[0]);
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/sanpham-them',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        console.log(response);
+                        swal.close();
+                        swal("Success!", "Data submitted successfully!", "success").then((value) => {
+                            window.location.href = "/admin/sanpham";
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        swal.close();
+                        swal("Error!", "An error occurred. Please try again later.", "error");
+                    }
+                });
+
+            }
+        });
+    </script>
     <script>
         var csrfToken = "{{ csrf_token() }}";
         var danhmuc = [];

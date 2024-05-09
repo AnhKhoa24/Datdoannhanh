@@ -17,8 +17,21 @@ use Illuminate\Support\Facades\Mail;
 class CartController extends Controller
 {
     public function index()
-    {       
-        return view('cart');
+    {
+
+        $mess = [];
+        $sl = 0;
+        if (Auth::user()) {
+            $mess = DB::table('messages')->where('user_id', Auth::user()->id)
+                ->where('kind', 1)
+                ->orderByDesc('created_at')
+                ->get();
+            $sl = count($mess);
+        }
+        return view('cart', [
+            'tinnhans' => $mess,
+            'sl' => $sl,
+        ]);
     }
 
 
@@ -36,8 +49,7 @@ class CartController extends Controller
         }
 
         $quantity = 1;
-        if($request->quantity)
-        {
+        if ($request->quantity) {
             $quantity = $request->quantity;
         }
         $product = [
@@ -51,7 +63,11 @@ class CartController extends Controller
         $cart = session('cart', []);
         $key = array_search($product['product_id'], array_column($cart, 'product_id'));
         if ($key !== false) {
-            $cart[$key]['quantity'] += $quantity;
+            if ($request->stt) {
+                $cart[$key]['quantity'] = $quantity;
+            } else {
+                $cart[$key]['quantity'] += $quantity;
+            }
         } else {
             $cart[] = $product;
         }
@@ -60,6 +76,7 @@ class CartController extends Controller
         if ($request->ajax()) {
             return [
                 'giohang' => view('minicart')->render(),
+                'cart_list' => view('mini_cart_page')->render(),
             ];
         }
         return 1;
@@ -84,18 +101,17 @@ class CartController extends Controller
         $name = Auth::user()->name;
         $mess = [];
         $sl = 0;
-        if(Auth::user())
-        {
-            $mess = DB::table('messages')->where('user_id',Auth::user()->id)
-            ->where('kind',1)
-            ->orderByDesc('created_at')
-            ->get();
+        if (Auth::user()) {
+            $mess = DB::table('messages')->where('user_id', Auth::user()->id)
+                ->where('kind', 1)
+                ->orderByDesc('created_at')
+                ->get();
             $sl = count($mess);
-        }  
+        }
         return view('checkout', [
             'name' => $name,
-            'tinnhans'=>$mess,
-            'sl'=>$sl,
+            'tinnhans' => $mess,
+            'sl' => $sl,
         ]);
     }
     public function ordering(Request $request)

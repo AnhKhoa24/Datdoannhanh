@@ -266,5 +266,53 @@ class DonhangController extends Controller
         return 1;
         
     }
+    public function tuchoiyeucau(Request $request)
+    {
+        $donofwho = DB::table('orders')->where('order_id', $request->order_id)->first();
+        DB::table('messages')->where('more',$request->order_id)->delete();
+        $tt = "Yêu cầu hủy đơn hàng: ".$request->order_id." không thành công!";
+        $current_time = new DateTime('now', new DateTimeZone('Asia/Ho_Chi_Minh'));
+        $formatted_time = $current_time->format("Y-m-d H:i:s");
+        $newmess = new Message();
+        $newmess->user_id = $donofwho->user_id;
+        $newmess->content = $tt;
+        $newmess->sender = Auth::user()->name;
+        $newmess->created_at = $formatted_time;
+        $newmess->save();
+
+        try {
+            event(new ThongBaoClientEvent($tt, $donofwho));
+        } catch (\Exception $e) {
+        }
+
+        return 1;
+        
+    }
+    public function huydonhang(Request $request)
+    {
+        $message = Auth::user()->name." đã hủy đơn hàng: ".$request->order_id." của bạn!";
+        $this->cancelOrder($request->order_id, $message);
+        return 1;
+    }
+    private function cancelOrder($order_id, $message)
+    {
+        $donofwho = DB::table('orders')->where('order_id', $order_id)->first();
+        DB::table('orders')->where('order_id', $order_id)->update([
+            'status'=>-1
+        ]);
+        DB::table('messages')->where('more',$order_id)->delete();
+        $current_time = new DateTime('now', new DateTimeZone('Asia/Ho_Chi_Minh'));
+        $formatted_time = $current_time->format("Y-m-d H:i:s");
+        $newmess = new Message();
+        $newmess->user_id = $donofwho->user_id;
+        $newmess->content = $message;
+        $newmess->sender = Auth::user()->name;
+        $newmess->created_at = $formatted_time;
+        $newmess->save();
+        try {
+            event(new ThongBaoClientEvent($message, $donofwho));
+        } catch (\Exception $e) {
+        }
+    }
 }
 

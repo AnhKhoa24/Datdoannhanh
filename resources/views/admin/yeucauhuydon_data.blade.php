@@ -21,7 +21,7 @@
                         id="btncheck1" autocomplete="off">
                     <label class="btn btn-outline-primary" for="btncheck1">Duyệt</label>
 
-                    <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+                    <input onclick="tuchoiyeucau({{ $yeucau->more }})" type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
                     <label class="btn btn-outline-danger" for="btncheck2">Từ chối</label>
 
                 </div>

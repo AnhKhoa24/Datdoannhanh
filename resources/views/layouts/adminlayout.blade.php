@@ -117,16 +117,6 @@
                                     <div data-i18n="Basic">Yêu cầu hủy đơn</div>
                                 </a>
                             </li>
-                            <li class="menu-item">
-                                <a href="auth-register-basic.html" class="menu-link" target="_blank">
-                                    <div data-i18n="Basic">Register</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                                    <div data-i18n="Basic">Forgot Password</div>
-                                </a>
-                            </li>
                         </ul>
                     </li>
 

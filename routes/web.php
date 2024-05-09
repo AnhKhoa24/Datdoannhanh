@@ -17,10 +17,9 @@ Route::post('/get-tinh',[HomeController::class,'getTinh'])->middleware('auth');
 Route::post('/get-qh',[HomeController::class,'getQH'])->middleware('auth');
 Route::post('/get-px',[HomeController::class,'getPX'])->middleware('auth');
 
-//
+//-client
 Route::get('/', [ProductController::class, 'index']);
 Route::get('chitiet/{id}',[ProductController::class,'chitiet']);
-
 Route::get('/get-tag-name', [ProductController::class, 'getName']);
 Route::get('/giohang', [CartController::class, 'index'])->middleware('auth');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->middleware('auth');
@@ -32,13 +31,17 @@ Route::post('/xoatinnhan',[HomeController::class,'xoatinnhan'])->middleware('aut
 Route::post('/loadtinnhan',[HomeController::class,'loadtinnhan'])->middleware('auth');
 Route::get('/donhangchitiet/{id}',[DonhangController::class,'chitiet'])->middleware('auth');
 Route::post('/yeucauhuydon',[DonhangController::class,'huydon'])->middleware('auth');
-///--------
+Route::post('/danhgia',[ProductController::class,'danhgia'])->middleware('auth');
+Route::get('/canhan',[HomeController::class,'canhan'])->middleware('auth');
+Route::post('/kiemtra-user',[HomeController::class,'kiemtra'])->middleware('auth');
+Route::post('/huytaikhoan',[HomeController::class,'huytaikhoan'])->middleware('auth');
+Route::get('/lichsudonhang',[DonhangController::class,'lichsudonhang'])->middleware('auth');
+Route::get('/dahuy',[DonhangController::class,'dahuy'])->middleware('auth');
+Route::post('/xoadonhang',[DonhangController::class,'xoadonhang'])->middleware('auth');
+
+///----end client----
 Route::get('/home', [HomeController::class,'index'])->middleware('auth');
 Route::get('/check', [HomeController::class,'check']);
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -75,6 +78,8 @@ Route::controller(AdminDonHangController::class)->group(function(){
     Route::post('/admin/donhang-savechages','savechanges')->middleware('auth','admin');
     Route::get('/admin/yeucauhuydon','yeucauhuydon')->middleware('auth','admin');
     Route::post('/admin/duyetyeucau','duyetyeucau')->middleware('auth','admin');
+    Route::post('/admin/huydonhang','huydonhang')->middleware('auth','admin');
+    Route::post('/admin/tuchoiyeucau','tuchoiyeucau')->middleware('auth','admin');
 });
 
 require __DIR__.'/auth.php';

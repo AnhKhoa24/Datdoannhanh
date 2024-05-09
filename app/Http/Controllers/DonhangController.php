@@ -148,4 +148,120 @@ class DonhangController extends Controller
 
         return $result;
     }
+    public function lichsudonhang()
+    {
+        $sp = DB::table('products')
+            ->selectRaw('products.*, IFNULL(MAX(photos.photo_link),"nophoto.jpg") AS photo_link')
+            ->leftJoin('photos', 'products.product_id', 'photos.product_id')
+            ->groupBy('products.product_id')
+            ->get();
+        $od_sp = DB::table('orderdetails')
+            ->select('orders.*', 'orderdetails.product_id', 'orderdetails.quantity', 'orderdetails.price', 'orderdetails.total')
+            ->join('orders', 'orderdetails.order_id', 'orders.order_id')
+            ->where('orders.user_id', Auth::user()->id)
+            ->where('orders.status', '6')
+            ->get();
+
+        $order_sp = [];
+
+        foreach ($od_sp as $item) {
+            $product = collect($sp)->firstWhere('product_id', $item->product_id);
+            $addpr = [
+                'product_id' => $product->product_id,
+                'product_name' => $product->product_name,
+                'photo_link' => $product->photo_link,
+                'quantity' => $item->quantity,
+                'price' => $item->price,
+                'total' => $item->total
+            ];
+            if ($product) {
+                $order_sp[] = [
+                    'order_id' => $item->order_id,
+                    'products' => $addpr,
+                ];
+            }
+        }
+
+        $donhangs = DB::table('orders')
+            ->where('user_id', Auth::user()->id)
+            ->where('orders.status','6')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $mess = [];
+        $sl = 0;
+        if (Auth::user()) {
+            $mess = DB::table('messages')->where('user_id', Auth::user()->id)
+                ->where('kind', 1)
+                ->orderByDesc('created_at')
+                ->get();
+            $sl = count($mess);
+        }
+        return view('lichsudonhang', [
+            'donhangs' => $donhangs,
+            'sanphams' => $order_sp,
+            'tinnhans' => $mess,
+            'sl' => $sl
+        ]);
+    }
+    public function dahuy()
+    {
+        $sp = DB::table('products')
+            ->selectRaw('products.*, IFNULL(MAX(photos.photo_link),"nophoto.jpg") AS photo_link')
+            ->leftJoin('photos', 'products.product_id', 'photos.product_id')
+            ->groupBy('products.product_id')
+            ->get();
+        $od_sp = DB::table('orderdetails')
+            ->select('orders.*', 'orderdetails.product_id', 'orderdetails.quantity', 'orderdetails.price', 'orderdetails.total')
+            ->join('orders', 'orderdetails.order_id', 'orders.order_id')
+            ->where('orders.user_id', Auth::user()->id)
+            ->where('orders.status', '-1')
+            ->get();
+
+        $order_sp = [];
+
+        foreach ($od_sp as $item) {
+            $product = collect($sp)->firstWhere('product_id', $item->product_id);
+            $addpr = [
+                'product_id' => $product->product_id,
+                'product_name' => $product->product_name,
+                'photo_link' => $product->photo_link,
+                'quantity' => $item->quantity,
+                'price' => $item->price,
+                'total' => $item->total
+            ];
+            if ($product) {
+                $order_sp[] = [
+                    'order_id' => $item->order_id,
+                    'products' => $addpr,
+                ];
+            }
+        }
+
+        $donhangs = DB::table('orders')
+            ->where('user_id', Auth::user()->id)
+            ->where('orders.status','-1')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $mess = [];
+        $sl = 0;
+        if (Auth::user()) {
+            $mess = DB::table('messages')->where('user_id', Auth::user()->id)
+                ->where('kind', 1)
+                ->orderByDesc('created_at')
+                ->get();
+            $sl = count($mess);
+        }
+        return view('dahuy', [
+            'donhangs' => $donhangs,
+            'sanphams' => $order_sp,
+            'tinnhans' => $mess,
+            'sl' => $sl
+        ]);
+    }
+    public function xoadonhang(Request $request)
+    {
+        DB::table('orderdetails')->where('order_id',$request->order_id)->delete();
+        DB::table('orders')->where('order_id',$request->order_id)->delete();
+        return 1;
+    }
 }

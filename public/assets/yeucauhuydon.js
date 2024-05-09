@@ -25,6 +25,35 @@ function duyetyeucau(order_id) {
         }
     });
 }
+function tuchoiyeucau(order_id) {
+    swal({
+        title: "Đang xử lý...",
+        text: "Vui lòng đợi trong giây lát",
+        icon: "info",
+        buttons: false,
+        closeOnClickOutside: false,
+    });
+    $.ajax({
+        url: "/admin/tuchoiyeucau",
+        type: "POST",
+        delay: 250,
+        data: {
+            "_token": csrf,
+            order_id: order_id,
+        },
+        success: function(response) {
+            document.getElementById('xoayeucau_'+order_id).remove();
+            swal.close();
+            swal("Thành công", "Bạn đã từ chối yêu cầu.", "success");
+        },
+        error: function() {
+            swal.close();
+            swal("Lỗi!", "Đã có lỗi xảy ra. Vui lòng thử lại sau.", "error");
+        }
+    });
+}
+
+
 var searchdef = "";
 //Lấy data khi thay đổi số trang trên thanh địa chỉ
 $(window).on('hashchange', function() {

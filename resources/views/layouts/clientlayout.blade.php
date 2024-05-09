@@ -104,7 +104,8 @@
                 <ul class="main-nav nav navbar-nav">
                     <li><a href="/">Sản phẩm</a></li>
                     <li><a href="/donhang">Đơn hàng</a></li>
-                    <li><a href="#">Lịch sử đơn hàng</a></li>
+                    <li><a href="/lichsudonhang">Lịch sử đơn hàng</a></li>
+                    <li><a href="/dahuy">Đã hủy</a></li>
                 </ul>
             </div>
         </div>
@@ -208,11 +209,10 @@
 
     @if (Auth::check())
         <script>
-            var csrfToken = "{{ csrf_token() }}";
             var user_id = "{{ Auth::user()->id }}";
         </script>
     @endif
-
+    <script>var csrfToken = "{{ csrf_token() }}";</script>
     <script src="/assets2/js/bootstrap.min.js"></script>
     <script src="/assets2/js/slick.min.js"></script>
     <script src="/assets2/js/nouislider.min.js"></script>

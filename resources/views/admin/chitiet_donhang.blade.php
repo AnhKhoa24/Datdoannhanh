@@ -59,14 +59,20 @@
                                 <div class="mb-3 col-md-4">
                                     <label for="currency" class="form-label"><strong>Trạng thái</strong></label>
                                     <select id="inp-status" name="status" class="select2 form-select">
-                                        <option value="1" {{ $order->status == 1 ? 'selected' : '' }}>Đang xác nhận đơn hàng
+                                        <option value="1" {{ $order->status == 1 ? 'selected' : '' }}>Đang xác nhận đơn
+                                            hàng
                                         </option>
-                                        <option value="2" {{ $order->status == 2 ? 'selected' : '' }}>Đã xác nhận đơn hàng
+                                        <option value="2" {{ $order->status == 2 ? 'selected' : '' }}>Đã xác nhận đơn
+                                            hàng
                                         </option>
-                                        <option value="3" {{ $order->status == 3 ? 'selected' : '' }}>Đang chuẩn bị hàng</option>
-                                        <option value="4" {{ $order->status == 4 ? 'selected' : '' }}>Đã chuẩn bị đơn hàng</option>
-                                        <option value="5" {{ $order->status == 5 ? 'selected' : '' }}>Đang giao </option>
-                                        <option value="6" {{ $order->status == 6 ? 'selected' : '' }}>Giao thành công</option>
+                                        <option value="3" {{ $order->status == 3 ? 'selected' : '' }}>Đang chuẩn bị
+                                            hàng</option>
+                                        <option value="4" {{ $order->status == 4 ? 'selected' : '' }}>Đã chuẩn bị đơn
+                                            hàng</option>
+                                        <option value="5" {{ $order->status == 5 ? 'selected' : '' }}>Đang giao
+                                        </option>
+                                        <option value="6" {{ $order->status == 6 ? 'selected' : '' }}>Giao thành công
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="mb-3 col-md-2">
@@ -144,7 +150,8 @@
                                 <div class="mt-2">
                                     <button onclick="SaveI4()" type="button" class="btn btn-primary me-2">Lưu thông
                                         tin</button>
-                                    <button type="button" class="btn btn-outline-danger">Hủy đơn</button>
+                                    <button type="button" onclick="huydonhang({{ $order->order_id }})"
+                                        class="btn btn-outline-danger">Hủy đơn</button>
                                 </div>
                         </form>
                     </div>
@@ -157,75 +164,5 @@
     <script>
         var csrfToken = "{{ csrf_token() }}"
     </script>
-    <script>
-        function Loadgia(event, order_id, product_id) {
-            if (event.key === "Enter") {
-                var soluong = document.getElementById('doi-soluong_' + product_id).value;
-                var by_price = document.getElementById('gia-goc_' + product_id).value;
-                var total = parseInt(soluong) * parseInt(by_price);
-                $.ajax({
-                    url: "/doisoluong",
-                    type: 'POST',
-                    dataType: "json",
-                    data: {
-                        product_id: product_id,
-                        order_id: order_id,
-                        quantity: soluong,
-                        total: total,
-                        "_token": csrfToken,
-                    },
-                    success: function(data) {
-                        var totaltext = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                        document.getElementById('total-doi_' + product_id).innerHTML = totaltext + "đ";
-                    },
-                    error: function() {
-
-                    }
-                });
-            }
-        }
-
-        function SaveI4() {
-            var status = document.getElementById('inp-status').value;
-            var recipient_name = document.getElementById('inp-recipient_name').value;
-            var recipient_phone = document.getElementById('inp-recipient_phone').value;
-            var recipient_address = document.getElementById('inp-recipient_address').value;
-            var payment = document.getElementById('inp-payment').value;
-            var order_id = document.getElementById('inp-order_id').value;
-            swal({
-                title: "Đang xử lý...",
-                text: "Vui lòng đợi trong giây lát",
-                icon: "info",
-                buttons: false,
-                closeOnClickOutside: false,
-            });
-            $.ajax({
-                url: "/admin/donhang-savechages",
-                type: "POST",
-                delay: 250,
-                data: {
-                    "_token": csrfToken,
-                    status: status,
-                    recipient_name: recipient_name,
-                    recipient_phone: recipient_phone,
-                    recipient_address: recipient_address,
-                    payment: payment,
-                    order_id: order_id,
-                },
-                success: function(response) {
-
-                    swal.close();
-                    swal({
-                        title: 'Thành công!',
-                        text: 'Cập nhật thành công thông tin đơn hàng!',
-                        icon: 'success',
-                    })
-                },
-                error: function() {
-                    swal.close();
-                    swal("Lỗi!", "Đã có lỗi xảy ra. Vui lòng thử lại sau.", "error");
-                }
-            });
-        }
-    </script>
+    <script src="{{ asset('assets/chitiet_donhang.js') }}"></script>
 @endsection

@@ -257,9 +257,16 @@ class DonhangController extends Controller
         $newmess->sender = Auth::user()->name;
         $newmess->created_at = $formatted_time;
         $newmess->save();
+  
+        $guive = [
+            'order_id'=>$donofwho->order_id,
+            'status'=> -1,
+            'user_id'=>$donofwho->user_id,
+            'trangthai'=>"Đã hủy"
+        ];
 
         try {
-            event(new ThongBaoClientEvent($tt, $donofwho));
+            event(new ThongBaoClientEvent($tt, $guive));
         } catch (\Exception $e) {
         }
 
@@ -280,8 +287,32 @@ class DonhangController extends Controller
         $newmess->created_at = $formatted_time;
         $newmess->save();
 
+        $tentrangthai = "Đang xác nhận đơn hàng";
+        switch ($donofwho -> status) {
+            case 2:
+                $tentrangthai = "Đã xác nhận đơn hàng";
+                break;
+            case 3:
+                $tentrangthai = "Đang chuẩn bị hàng";
+                break;
+            case 4:
+                $tentrangthai = "Đã chuẩn bị đơn hàng";
+                break;
+            case 5:
+                $tentrangthai = "Đang giao";
+                break;
+            case 6:
+                $tentrangthai = "Đã giao thành công";
+                break;
+        }
+        $guive = [
+            'order_id'=>$donofwho->order_id,
+            'status'=>$donofwho->status,
+            'trangthai'=>$tentrangthai,
+            'user_id'=>$donofwho->user_id,
+        ];
         try {
-            event(new ThongBaoClientEvent($tt, $donofwho));
+            event(new ThongBaoClientEvent($tt, $guive));
         } catch (\Exception $e) {
         }
 

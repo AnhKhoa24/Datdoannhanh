@@ -105,8 +105,6 @@
                     </div>
                     <!-- /Order Details -->
                 </div>
-                <br id="br_{{ $item->order_id }}">
-                <button id="but_{{ $item->order_id }}" type="submit" onclick="xoadon({{ $item->order_id }})" class="btn btn-primary">Xóa</button>
                 <hr style="border: 1.5px solid #f50202;" id="hr_{{ $item->order_id }}">
                 <!-- /row -->
             @endforeach
@@ -115,43 +113,5 @@
         <!-- /container -->
     </div>
     <!-- /SECTION -->
-<script>
-    var token = "{{ csrf_token() }}";
-</script>
-    <script>
-        function xoadon(order_id) {
-            swal({
-                    title: "Bạn muốn xóa?",
-                    text: "Bạn có chắc muốn xóa đi đơn hàng này không!",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        $.ajax({
-                            url: "/xoadonhang",
-                            type: 'POST',
-                            dataType: "json",
-                            data: {
-                                order_id: order_id,
-                                "_token": token,
-                            },
-                            success: function(response) {
-                                document.getElementById('item-order_'+order_id).remove();
-                                document.getElementById('hr_'+order_id).remove();
-                                document.getElementById('br_'+order_id).remove();
-                                document.getElementById('but_'+order_id).remove();
-                                swal("Thành công", "Bạn đã xóa đơn hàng!", "success");
-                            },
-                            error: function()
-                            {
-                                alert("Lỗi server, vui lòng thử lại sau!");
-                            }
-                        })
 
-                    }
-                });
-        }
-    </script>
 @endsection

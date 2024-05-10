@@ -49,9 +49,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::controller(AdminHomeController::class)->group(function(){
-    Route::get('admin','index')->middleware('auth','admin');
-});
+// Route::controller(AdminHomeController::class)->group(function(){
+//     Route::get('admin','index')->middleware('auth','admin');
+// });
+
+Route::get('admin',[AdminProductController::class,'thongke'])->middleware('auth','admin');
+
 Route::controller(AdminProductController::class)->group(function(){
     Route::get('admin/sanpham','index')->middleware('auth', 'admin');
     Route::get('admin/sanpham-them','create')->middleware('auth','admin');

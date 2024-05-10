@@ -140,8 +140,8 @@ class CartController extends Controller
         }
         session()->forget('cart');
 
-        $username = 'Khoa nè con';
-        Mail::to('anhkhoa.24052003@gmail.com')->send(new OrderShipped($username));
+        $username = Auth::user()->name;
+        Mail::to(Auth::user()->email)->send(new OrderShipped($username));
         try {
             event(new ThongBaoEvent());
         } catch (\Exception $e) {

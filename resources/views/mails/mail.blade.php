@@ -1,15 +1,13 @@
 
-@extends('layouts.adminlayout')
-@section('content')
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Email Template</title>
+    <title>Email</title>
 </head>
 <body>
-    <h1>Hello, {{ $username }}</h1>
-    <p>This is the content of your email.</p>
+    <h1>Chào, {{ $username }}</h1>
+    <p>Bạn đặt thành công một đơn hàng.</p>
 </body>
 </html>
-@endsection
+
 

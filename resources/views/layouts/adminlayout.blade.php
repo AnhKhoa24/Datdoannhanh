@@ -74,7 +74,7 @@
                 <ul class="menu-inner py-1">
                     <!-- Dashboard -->
                     <li class="menu-item">
-                        <a href="#" class="menu-link">
+                        <a href="/admin" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div>Trang chủ</div>
                         </a>
@@ -108,7 +108,7 @@
                     </li>
                     <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
+                            <i class="menu-icon tf-icons bx bx-support"></i>
                             <div data-i18n="Authentications">Khác</div>
                         </a>
                         <ul class="menu-sub">
@@ -132,11 +132,11 @@
                     </div>
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                         <div class="navbar-nav align-items-center">
-                            <div class="nav-item d-flex align-items-center">
+                            {{-- <div class="nav-item d-flex align-items-center">
                                 <i class="bx bx-search fs-4 lh-0"></i>
                                 <input type="text" class="form-control border-0 shadow-none"
                                     placeholder="Search..." aria-label="Search..." />
-                            </div>
+                            </div> --}}
                         </div>
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
                             @if (Auth::check())

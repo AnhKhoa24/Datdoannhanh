@@ -34,6 +34,43 @@ $(document).ready(function () {
     })
 });
 
+document.getElementById("submitBtn").addEventListener("click", function(e) {
+    e.preventDefault();
+    validateForm();
+    if (validateForm()) {
+        var loadingAlert = swal({
+            title: "Loading...",
+            text: "Please wait",
+            icon: "info",
+            buttons: false,
+            closeOnClickOutside: false,
+            closeOnEsc: false,
+        });
+        $('#myForm').append('<input type="hidden" name="_token" value="' + csrfToken + '">');
+        var formData = new FormData($('#myForm')[0]);
+        $.ajax({
+            type: 'POST',
+            url: '/admin/sanpham-them',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                console.log(response);
+                swal.close();
+                swal("Thành công!", "Bạn đã thêm thành công sản phẩm mới!", "success").then((value) => {
+                    window.location.href = "/admin/sanpham";
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                swal.close();
+                swal("Error!", "An error occurred. Please try again later.", "error");
+            }
+        });
+
+    }
+});
+
 
 function validateForm() {
     var productName = document.getElementById("product_name").value;
@@ -101,7 +138,19 @@ function xoaSP(product_id) {
                                 }
                             });
                         }
+                        else if (response == 0)
+                        {
+                            swal("Thất bại! Sản phẩm vẫn còn tồn tại trong đơn hàng!", {
+                                icon: "warning",
+                            })
+                        }
 
+                    },
+                    error:function()
+                    {
+                        swal("Lỗi! Lỗi server vui lòng thử lại sau!", {
+                            icon: "error",
+                        })
                     }
                 })
 

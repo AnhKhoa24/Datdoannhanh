@@ -118,13 +118,16 @@ class DonhangController extends Controller
     public function huydon(Request $request)
     {
         $timdon = DB::table('orders')->where('order_id', $request->order_id)->first();
-        $result = 0;
         if ($timdon->status == 1) {
             //hủy thành công
             DB::table('orders')->where('order_id', $request->order_id)->update([
                 'status' => -1,
             ]);
-            $result = 1;
+            try {
+                event(new HuyDonEvent('Đơn hàng: '. $request->order_id." đã được hủy"));
+            } catch (\Exception $e) {
+            }
+            return 1;
         } else if ($timdon->status >= 2) {
 
             $check = DB::table('messages')->where('more', $request->order_id)->first();
@@ -146,7 +149,7 @@ class DonhangController extends Controller
         } catch (\Exception $e) {
         }
 
-        return $result;
+        return 0;
     }
     public function lichsudonhang()
     {
@@ -184,7 +187,7 @@ class DonhangController extends Controller
 
         $donhangs = DB::table('orders')
             ->where('user_id', Auth::user()->id)
-            ->where('orders.status','6')
+            ->where('orders.status', '6')
             ->orderBy('created_at', 'desc')
             ->get();
         $mess = [];
@@ -239,7 +242,7 @@ class DonhangController extends Controller
 
         $donhangs = DB::table('orders')
             ->where('user_id', Auth::user()->id)
-            ->where('orders.status','-1')
+            ->where('orders.status', '-1')
             ->orderBy('created_at', 'desc')
             ->get();
         $mess = [];
@@ -260,8 +263,8 @@ class DonhangController extends Controller
     }
     public function xoadonhang(Request $request)
     {
-        DB::table('orderdetails')->where('order_id',$request->order_id)->delete();
-        DB::table('orders')->where('order_id',$request->order_id)->delete();
+        DB::table('orderdetails')->where('order_id', $request->order_id)->delete();
+        DB::table('orders')->where('order_id', $request->order_id)->delete();
         return 1;
     }
 }

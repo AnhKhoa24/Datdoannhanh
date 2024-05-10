@@ -8,6 +8,14 @@ channel.bind('thongbaoclient', function (data) {
     if (data.assets['user_id'] == user_id) {
         getMesage();
         showNotification(data.message);
+        if (data.assets['status'] && data.assets['status'] == -1) {
+            var xoaall = document.getElementById("item-order_"+data.assets['order_id']);
+            var xoahr = document.getElementById("hr_"+data.assets['order_id']);
+            if(xoaall && xoahr){
+                xoaall.remove();
+                xoahr.remove();
+            }   
+        }
         if (data.assets['status'] && data.assets['status'] < 6 && data.assets['status'] > 0) {
             var doitrangthai = document.getElementById("doitrangthai-header");
             if (doitrangthai) {
@@ -22,6 +30,7 @@ channel.bind('thongbaoclient', function (data) {
                 xoahr.remove();
             }   
         }
+       
     }
 });
 function showNotification(content) {

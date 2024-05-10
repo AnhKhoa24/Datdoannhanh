@@ -7,15 +7,18 @@
                 <form method="GET" action="/admin">
                     <div class="form-group">
                         <label for="from_date">Từ ngày:</label>
-                        <input type="date" class="form-control" id="from_date" name="from_date" value="{{ request('from_date') }}">
+                        <input type="date" class="form-control" id="from_date" name="from_date"
+                               value="{{ request('from_date', \Carbon\Carbon::now()->subDays(7)->toDateString()) }}">
                     </div>
                     <div class="form-group">
                         <label for="to_date">Đến ngày:</label>
-                        <input type="date" class="form-control" id="to_date" name="to_date" value="{{ request('to_date') }}">
+                        <input type="date" class="form-control" id="to_date" name="to_date"
+                               value="{{ request('to_date', \Carbon\Carbon::now()->toDateString()) }}">
                     </div>
                     <button type="submit" class="btn btn-primary">Lọc</button>
                 </form>
             </div>
+
         </div>
         <div class="row">
             <div class="col-md-6">

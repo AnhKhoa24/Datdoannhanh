@@ -6,6 +6,7 @@ use App\Events\ProductDeleteEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Photo;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -181,50 +182,52 @@ class ProductController extends Controller
         return 1;
     }
 
-     //Thống kê ở đây Khoa
-     public function thongKe(Request $request)
-     {
-         $fromDate = $request->input('from_date');
-         $toDate = $request->input('to_date');
-         $quantityStats = $this->getQuantityStatistics($fromDate, $toDate);
-         $revenueStats = $this->getRevenueStatistics($fromDate, $toDate);
- 
- 
-         return view('admin.statistical', compact('quantityStats', 'revenueStats'));
-     }
-     private function getQuantityStatistics($fromDate, $toDate)
-     {
-         $query = DB::table('orderdetails')
-             ->join('products', 'orderdetails.product_id', '=', 'products.product_id')
-             ->join('orders', 'orderdetails.order_id', '=', 'orders.order_id')
-             ->select('products.product_name', DB::raw('SUM(orderdetails.quantity) as quantity'))
-             ->where('orders.status', '=', 6)
-             ->groupBy('products.product_name');
- 
-         if ($fromDate && $toDate) {
-             $query->whereBetween('orderdetails.created_at', [$fromDate, $toDate]);
-         }
-         else{
- 
-         }
- 
-         return $query->get();
-     }
- 
-     private function getRevenueStatistics($fromDate, $toDate)
-     {
-         $query = DB::table('orderdetails')
-             ->join('products', 'orderdetails.product_id', '=', 'products.product_id')
-             ->join('orders', 'orderdetails.order_id', '=', 'orders.order_id')
-             ->select('products.product_name', DB::raw('SUM(orderdetails.quantity * products.price) as revenue'))
-             ->where('orders.status', '=', 6)
-             ->limit(5)
-             ->groupBy('products.product_name');
- 
-         if ($fromDate && $toDate) {
-             $query->whereBetween('orderdetails.created_at', [$fromDate, $toDate]);
-         }
- 
-         return $query->get();
-     }
+      //Thống kê ở đây Khoa
+    public function thongKe(Request $request)
+    {
+        $fromDate = $request->input('from_date');
+        $toDate = $request->input('to_date');
+        $quantityStats = $this->getQuantityStatistics($fromDate, $toDate);
+        $revenueStats = $this->getRevenueStatistics($fromDate, $toDate);
+
+
+        return view('admin.statistical', compact('quantityStats', 'revenueStats'));
+    }
+    private function getQuantityStatistics($fromDate, $toDate)
+    {
+        $query = DB::table('orderdetails')
+            ->join('products', 'orderdetails.product_id', '=', 'products.product_id')
+            ->join('orders', 'orderdetails.order_id', '=', 'orders.order_id')
+            ->select('products.product_name', DB::raw('SUM(orderdetails.quantity) as quantity'))
+            ->where('orders.status', '=', 6)
+            ->groupBy('products.product_name');
+
+        if ($fromDate && $toDate) {
+            $toDate = Carbon::parse($toDate)->addDay()->toDateString();
+            $query->whereBetween('orderdetails.created_at', [$fromDate, $toDate]);
+        }
+        else{
+
+        }
+
+        return $query->get();
+    }
+
+    private function getRevenueStatistics($fromDate, $toDate)
+    {
+        $query = DB::table('orderdetails')
+            ->join('products', 'orderdetails.product_id', '=', 'products.product_id')
+            ->join('orders', 'orderdetails.order_id', '=', 'orders.order_id')
+            ->select('products.product_name', DB::raw('SUM(orderdetails.quantity * products.price) as revenue'))
+            ->where('orders.status', '=', 6)
+            ->limit(5)
+            ->groupBy('products.product_name');
+
+        if ($fromDate && $toDate) {
+            $toDate = Carbon::parse($toDate)->addDay()->toDateString();
+            $query->whereBetween('orderdetails.created_at', [$fromDate, $toDate]);
+        }
+
+        return $query->get();
+    }
 }

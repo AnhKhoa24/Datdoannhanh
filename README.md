@@ -2,8 +2,8 @@
 ## Giới thiệu về dự án
     -Tên dự án: Phần mềm đặt thức ăn nhanh 
     -Quản lý dự án: Huỳnh Anh Khoa
-    -Hoàng Hải Đăng, Vũ Quốc Tùng, Phan Thị Hồng Hiên
-    -Chịu trách nhiệm phát triển phần mềm: 	Ngô Bá Tấn Tài, Huỳnh Anh Khoa
+    -Hoàng Hải Đăng, Vũ Quốc Tùng
+    -Chịu trách nhiệm phát triển phần mềm: Huỳnh Anh Khoa
 ## Cài đặt
     -Laravel v10.48.8 (PHP v8.1.10)
     -Chi tiết tại trang chủ laravel
